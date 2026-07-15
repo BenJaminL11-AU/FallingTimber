@@ -53,24 +53,6 @@ Aliases: `/fallingtimber`, `/timber`, `/ftimber`.
 | `fallingtimber.command` | Everyone | Use player commands. |
 | `fallingtimber.reload` | Operators | Reload configuration. |
 
-## Build from source
-
-Paper recommends Gradle. Install JDK 25, then run:
-
-```bash
-gradle clean build
-```
-
-The output is `build/libs/FallingTimber-1.0.0.jar`.
-
-Maven coordinates: `io.github.benjaminl11au:fallingtimber:1.0.0`.
-
-## Publish to GitHub Packages
-
-The included `Publish FallingTimber Package` workflow can be started manually
-from the repository's **Actions** tab. It builds with Java 25 and publishes the
-Maven package using the repository's built-in `GITHUB_TOKEN`.
-
 ## Notes
 
 - Replanting is optional and disabled by default. It plants one sapling or
