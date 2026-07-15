@@ -1,0 +1,44 @@
+# Master switch for automatic tree felling.
+enabled: true
+
+# Holding sneak while chopping performs a normal one-block break.
+sneak-to-bypass: true
+
+# Creative players normally build with logs, so Timber is disabled for them.
+allow-creative: false
+
+# Only connected logs of the same material as the first log are collected.
+# This is an important safeguard for houses and other wooden builds.
+same-log-type-only: true
+
+# Fire a BlockBreakEvent for every extra log so protection plugins can veto it.
+respect-other-plugins: true
+
+detection:
+  # A candidate needs at least this many connected logs and nearby leaves.
+  minimum-logs: 3
+  minimum-leaves: 4
+  leaf-search-radius: 2
+
+  # Hard safety limits. Trees over the log limit are left alone.
+  maximum-logs: 256
+  maximum-horizontal-radius: 12
+  maximum-vertical-distance: 64
+
+felling:
+  # Spreads large trees over multiple ticks to avoid a server lag spike.
+  blocks-per-tick: 8
+
+  # Vanilla damages the axe for the first log. This applies normal durability,
+  # Unbreaking, events, and break animations for every additional log.
+  damage-axe: true
+  damage-per-extra-log: 1
+
+replant:
+  # Supports normal Overworld tree saplings/propagules. For 2x2 trees, a
+  # single sapling is planted at the detected base.
+  enabled: false
+  delay-ticks: 20
+
+messages:
+  prefix: '&8[&2FallingTimber&8] &7'

@@ -1,0 +1,24 @@
+name: FallingTimber
+version: '1.0.0'
+main: io.github.benjaminl11au.fallingtimber.FallingTimberPlugin
+description: Fell an entire tree by breaking one log with an axe.
+author: BenJaminL11-AU
+api-version: '26.2'
+
+commands:
+  fallingtimber:
+    description: Control FallingTimber.
+    usage: /fallingtimber <toggle|status|reload|help>
+    aliases: [timber, ftimber]
+    permission: fallingtimber.command
+
+permissions:
+  fallingtimber.use:
+    description: Allows a player to fell whole trees.
+    default: true
+  fallingtimber.command:
+    description: Allows access to FallingTimber player commands.
+    default: true
+  fallingtimber.reload:
+    description: Allows reloading the FallingTimber configuration.
+    default: op
