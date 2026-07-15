@@ -23,9 +23,7 @@ java {
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    // Paper 26.2 runs on Java 25, but the plugin does not need Java 25-only
-    // bytecode. This keeps the output straightforward for tooling to inspect.
-    options.release.set(17)
+    options.release.set(25)
 }
 
 tasks.jar {
