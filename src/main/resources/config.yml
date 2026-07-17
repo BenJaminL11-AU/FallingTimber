@@ -20,6 +20,14 @@ detection:
   minimum-leaves: 4
   leaf-search-radius: 2
 
+  # Naturally generated leaves have Minecraft's persistent flag turned off.
+  # Player-placed leaves are persistent, so decorative builds are ignored.
+  require-natural-leaves: true
+
+  # The lowest log must be planted on normal tree-growing ground. This rejects
+  # most walls, roofs, log piles, bridges, and other wooden structures.
+  require-rooted-tree: true
+
   # Hard safety limits. Trees over the log limit are left alone.
   maximum-logs: 256
   maximum-horizontal-radius: 12

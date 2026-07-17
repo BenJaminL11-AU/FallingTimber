@@ -1,5 +1,5 @@
 name: FallingTimber
-version: '1.1.0'
+version: '1.1.1'
 main: io.github.benjaminl11au.fallingtimber.FallingTimberPlugin
 description: Fell an entire tree by breaking one log with an axe.
 author: BenJaminL11-AU

@@ -9,6 +9,9 @@ Minecraft's normal rules.
 
 - Requires a configurable number of logs and nearby leaves, so an ordinary
   wooden wall is not mistaken for a tree.
+- Counts naturally generated leaves by default; player-placed decorative leaves
+  do not make a wooden structure qualify as a tree.
+- Requires the lowest log to be rooted on normal tree-growing ground.
 - Only follows the original log material by default.
 - Refuses trees above the configured size/radius limits.
 - Processes large trees over multiple ticks.
@@ -29,7 +32,7 @@ Paper updated and test the plugin on a copy of your world before production use.
 ## Install
 
 1. Stop the Minecraft server.
-2. Copy `FallingTimber-1.1.0.jar` into the server's `plugins` folder.
+2. Copy `FallingTimber-1.1.1.jar` into the server's `plugins` folder.
 3. Start the server.
 4. Edit `plugins/FallingTimber/config.yml` if desired.
 5. Run `/fallingtimber reload`, or restart the server, after changing config.
@@ -62,7 +65,7 @@ Paper recommends Gradle. Install JDK 25, then run:
 gradle clean build
 ```
 
-The output is `build/libs/FallingTimber-1.1.0.jar`.
+The output is `build/libs/FallingTimber-1.1.1.jar`.
 
 ## Update notifications
 

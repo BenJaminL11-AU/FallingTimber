@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Leaves;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -70,6 +72,10 @@ final class TreeScanner {
 
         if (found.size() < settings.minimumLogs()) {
             return ScanResult.rejected("too-few-logs");
+        }
+
+        if (settings.requireRootedTree() && !hasValidRoot(world, found)) {
+            return ScanResult.rejected("not-rooted");
         }
 
         if (!hasEnoughLeaves(world, found, settings)) {
@@ -155,7 +161,8 @@ final class TreeScanner {
                             continue;
                         }
 
-                        if (isLeafLike(world.getBlockAt(position.x(), position.y(), position.z()).getType())) {
+                        Block leafBlock = world.getBlockAt(position.x(), position.y(), position.z());
+                        if (isQualifyingLeaf(leafBlock, settings.requireNaturalLeaves())) {
                             leaves.add(position);
                             if (leaves.size() >= settings.minimumLeaves()) {
                                 return true;
@@ -167,6 +174,44 @@ final class TreeScanner {
         }
 
         return false;
+    }
+
+    private static boolean hasValidRoot(World world, Set<BlockPosition> logs) {
+        int lowestY = logs.stream().mapToInt(BlockPosition::y).min().orElse(Integer.MIN_VALUE);
+        for (BlockPosition log : logs) {
+            if (log.y() != lowestY) {
+                continue;
+            }
+
+            Material ground = world.getBlockAt(log.x(), log.y() - 1, log.z()).getType();
+            if (isTreeGround(ground)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isTreeGround(Material material) {
+        String name = material.name();
+        return Tag.DIRT.isTagged(material)
+                || name.equals("MUD")
+                || name.equals("MUDDY_MANGROVE_ROOTS")
+                || name.equals("MOSS_BLOCK")
+                || name.equals("PALE_MOSS_BLOCK")
+                || name.equals("CRIMSON_NYLIUM")
+                || name.equals("WARPED_NYLIUM");
+    }
+
+    private static boolean isQualifyingLeaf(Block block, boolean requireNaturalLeaves) {
+        BlockData data = block.getBlockData();
+        if (data instanceof Leaves leaves) {
+            return !requireNaturalLeaves || !leaves.isPersistent();
+        }
+
+        // Nether fungi use wart blocks instead of ordinary leaves. These blocks
+        // do not expose a natural/player-placed flag, so strict mode avoids
+        // guessing and leaves Nether wood structures untouched.
+        return !requireNaturalLeaves && isLeafLike(block.getType());
     }
 
     private static boolean isLeafLike(Material material) {
