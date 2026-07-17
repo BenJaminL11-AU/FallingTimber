@@ -18,7 +18,13 @@ public record TimberSettings(
         boolean damageAxe,
         int damagePerExtraLog,
         boolean replantEnabled,
-        int replantDelayTicks
+        int replantDelayTicks,
+        boolean updateChecksEnabled,
+        boolean notifyUpdatesOnJoin,
+        int updateNotifyDelayTicks,
+        int updateCheckIntervalHours,
+        String githubRepository,
+        String releasesUrl
 ) {
     public static TimberSettings from(FileConfiguration config) {
         return new TimberSettings(
@@ -37,7 +43,14 @@ public record TimberSettings(
                 config.getBoolean("felling.damage-axe", true),
                 clamp(config.getInt("felling.damage-per-extra-log", 1), 1, 16),
                 config.getBoolean("replant.enabled", false),
-                clamp(config.getInt("replant.delay-ticks", 20), 1, 1200)
+                clamp(config.getInt("replant.delay-ticks", 20), 1, 1200),
+                config.getBoolean("updates.enabled", true),
+                config.getBoolean("updates.notify-on-join", true),
+                clamp(config.getInt("updates.notify-delay-ticks", 40), 0, 1200),
+                clamp(config.getInt("updates.check-interval-hours", 6), 1, 168),
+                config.getString("updates.github-repository", "BenJaminL11-AU/FallingTimber"),
+                config.getString("updates.releases-url",
+                        "https://github.com/BenJaminL11-AU/FallingTimber/releases")
         );
     }
 

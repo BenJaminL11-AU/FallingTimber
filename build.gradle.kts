@@ -1,10 +1,9 @@
 plugins {
     java
-    `maven-publish`
 }
 
 group = "io.github.benjaminl11au"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     maven {
@@ -28,26 +27,4 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.jar {
     archiveBaseName.set("FallingTimber")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            artifactId = "fallingtimber"
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            val githubRepository = System.getenv("GITHUB_REPOSITORY")
-                ?: "BenJaminL11-AU/FallingTimber"
-            url = uri("https://maven.pkg.github.com/$githubRepository")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
 }

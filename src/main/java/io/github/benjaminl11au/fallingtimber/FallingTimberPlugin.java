@@ -19,6 +19,7 @@ public final class FallingTimberPlugin extends JavaPlugin {
 
     private TimberSettings settings;
     private TimberListener listener;
+    private UpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -28,6 +29,10 @@ public final class FallingTimberPlugin extends JavaPlugin {
         listener = new TimberListener(this);
         getServer().getPluginManager().registerEvents(listener, this);
 
+        updateChecker = new UpdateChecker(this);
+        getServer().getPluginManager().registerEvents(updateChecker, this);
+        updateChecker.start();
+
         PluginCommand command = Objects.requireNonNull(
                 getCommand("fallingtimber"),
                 "fallingtimber command is missing from plugin.yml"
@@ -35,13 +40,17 @@ public final class FallingTimberPlugin extends JavaPlugin {
         command.setExecutor(this);
         command.setTabCompleter(this);
 
-        getLogger().info("FallingTimber 1.0.0 enabled for Paper 26.2.");
+        getLogger().info("FallingTimber " + getPluginMeta().getVersion()
+                + " enabled for Paper 26.2.");
     }
 
     @Override
     public void onDisable() {
         if (listener != null) {
             listener.shutdown();
+        }
+        if (updateChecker != null) {
+            updateChecker.stop();
         }
     }
 
@@ -56,6 +65,7 @@ public final class FallingTimberPlugin extends JavaPlugin {
         switch (subcommand) {
             case "toggle" -> toggle(sender);
             case "status" -> status(sender);
+            case "version" -> updateChecker.sendStatus(sender);
             case "reload" -> reload(sender);
             case "help" -> help(sender, label);
             default -> {
@@ -78,7 +88,7 @@ public final class FallingTimberPlugin extends JavaPlugin {
         }
 
         String input = args[0].toLowerCase(Locale.ROOT);
-        List<String> choices = new ArrayList<>(List.of("toggle", "status", "help"));
+        List<String> choices = new ArrayList<>(List.of("toggle", "status", "version", "help"));
         if (sender.hasPermission("fallingtimber.reload")) {
             choices.add("reload");
         }
@@ -117,12 +127,14 @@ public final class FallingTimberPlugin extends JavaPlugin {
 
         reloadConfig();
         loadSettings();
+        updateChecker.start();
         message(sender, "Configuration reloaded.");
     }
 
     private void help(CommandSender sender, String label) {
         message(sender, "&f/" + label + " toggle &8- &7enable or disable Timber for yourself");
         message(sender, "&f/" + label + " status &8- &7show your current status");
+        message(sender, "&f/" + label + " version &8- &7show installed and latest versions");
         if (sender.hasPermission("fallingtimber.reload")) {
             message(sender, "&f/" + label + " reload &8- &7reload config.yml");
         }

@@ -29,7 +29,7 @@ Paper updated and test the plugin on a copy of your world before production use.
 ## Install
 
 1. Stop the Minecraft server.
-2. Copy `FallingTimber-1.0.0.jar` into the server's `plugins` folder.
+2. Copy `FallingTimber-1.1.0.jar` into the server's `plugins` folder.
 3. Start the server.
 4. Edit `plugins/FallingTimber/config.yml` if desired.
 5. Run `/fallingtimber reload`, or restart the server, after changing config.
@@ -40,6 +40,7 @@ Paper updated and test the plugin on a copy of your world before production use.
 | --- | --- |
 | `/timber toggle` | Toggle Timber for yourself for the current server session. |
 | `/timber status` | Show whether Timber is enabled for you. |
+| `/timber version` | Show installed/latest versions and a clickable Releases link. |
 | `/timber reload` | Reload configuration; requires `fallingtimber.reload`. |
 | `/timber help` | Show command help. |
 
@@ -52,6 +53,26 @@ Aliases: `/fallingtimber`, `/timber`, `/ftimber`.
 | `fallingtimber.use` | Everyone | Fell whole trees. |
 | `fallingtimber.command` | Everyone | Use player commands. |
 | `fallingtimber.reload` | Operators | Reload configuration. |
+
+## Build from source
+
+Paper recommends Gradle. Install JDK 25, then run:
+
+```bash
+gradle clean build
+```
+
+The output is `build/libs/FallingTimber-1.1.0.jar`.
+
+## Update notifications
+
+FallingTimber checks the latest public GitHub Release asynchronously and caches
+the result. Players see the installed version, latest version, and a clickable
+Releases link shortly after joining. The check, join message, delay, refresh
+interval, repository, and link can all be changed under `updates` in
+`config.yml`.
+
+Release downloads: https://github.com/BenJaminL11-AU/FallingTimber/releases
 
 ## Notes
 

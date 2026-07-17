@@ -40,5 +40,18 @@ replant:
   enabled: false
   delay-ticks: 20
 
+updates:
+  # Checks the latest public GitHub Release without blocking the server thread.
+  enabled: true
+
+  # Show installed/latest versions and a clickable Releases link when players join.
+  notify-on-join: true
+  notify-delay-ticks: 40
+
+  # Results are shared between all players; GitHub is not contacted for every join.
+  check-interval-hours: 6
+  github-repository: 'BenJaminL11-AU/FallingTimber'
+  releases-url: 'https://github.com/BenJaminL11-AU/FallingTimber/releases'
+
 messages:
   prefix: '&8[&2FallingTimber&8] &7'
