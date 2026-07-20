@@ -1,50 +1,57 @@
 # FallingTimber
 
-FallingTimber is a small Paper 26.2 plugin: break one log with an axe and the
-connected tree is felled in a quick top-down cascade. Logs drop normally, axe
-durability and Unbreaking are respected, and leaves are left to decay using
-Minecraft's normal rules.
+FallingTimber is a lightweight Paper 26.2 plugin that fells a whole natural
+tree when a player breaks one log with an allowed axe. Logs fall in a controlled
+top-down cascade, use normal drops, respect axe durability and protection
+plugins, and are guarded by conservative structure detection.
 
-## Included safeguards
+## Highlights
 
-- Requires a configurable number of logs and nearby leaves, so an ordinary
-  wooden wall is not mistaken for a tree.
-- Counts naturally generated leaves by default; player-placed decorative leaves
-  do not make a wooden structure qualify as a tree.
-- Requires the lowest log to be rooted on normal tree-growing ground.
-- Only follows the original log material by default.
-- Refuses trees above the configured size/radius limits.
-- Processes large trees over multiple ticks.
-- Fires a `BlockBreakEvent` for every extra log so region/protection plugins
-  can cancel individual breaks.
-- Does not run in Creative by default.
-- Hold Sneak to bypass the plugin and break one block normally.
+- Natural-tree detection using connected logs, non-persistent leaves and rooted
+  ground checks.
+- Protection against flat log structures, oversized trees, concurrent chopping
+  and optionally logs touching doors, beds, containers, signs or workstations.
+- Persistent player `/timber toggle` and `/timber debug` preferences.
+- Per-world blacklist or whitelist and configurable allowed axes.
+- Axe durability pre-check, optional enchantment/name requirements, TPS guard,
+  cooldown, rate limit and distance cancellation.
+- Batched felling, optional batched leaf decay, sounds, particles and action-bar
+  progress.
+- Optional single- and 2x2-tree replanting.
+- Player statistics, leaderboards and admin tree inspection.
+- Asynchronous, cached GitHub update checking with admin-only join notices.
+- Automatic configuration migration with timestamped backups.
 
 ## Requirements
 
 - Paper 26.2
-- Java 25 to run Paper 26.2
+- Java 25 or newer as required by Paper 26.2
 
-Paper 26.2 was still marked experimental when this version was produced. This
-release was compiled against and load-tested on Paper 26.2 build 60 (beta). Keep
-Paper updated and test the plugin on a copy of your world before production use.
+## Installation
 
-## Install
+1. Stop the server.
+2. Copy `FallingTimber-1.2.0.jar` into the root of the `plugins` folder.
+3. Remove any older FallingTimber JAR so only one version remains.
+4. Start the server.
+5. Edit `plugins/FallingTimber/config.yml` if desired.
+6. Run `/timber reload` after configuration changes.
 
-1. Stop the Minecraft server.
-2. Copy `FallingTimber-1.1.1.jar` into the server's `plugins` folder.
-3. Start the server.
-4. Edit `plugins/FallingTimber/config.yml` if desired.
-5. Run `/fallingtimber reload`, or restart the server, after changing config.
+When upgrading, FallingTimber backs up an older `config.yml` under
+`plugins/FallingTimber/config-backups` and adds the v1.2 settings. Persistent
+preferences and statistics are stored in `player-data.yml`.
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `/timber toggle` | Toggle Timber for yourself for the current server session. |
-| `/timber status` | Show whether Timber is enabled for you. |
-| `/timber version` | Show installed/latest versions and a clickable Releases link. |
-| `/timber reload` | Reload configuration; requires `fallingtimber.reload`. |
+| `/timber toggle` | Persistently enable or disable tree felling for yourself. |
+| `/timber status` | Show your current FallingTimber state. |
+| `/timber debug` | Toggle action-bar rejection explanations. |
+| `/timber inspect` | Inspect the targeted log and explain tree detection. |
+| `/timber stats [player]` | Show saved tree and log statistics. |
+| `/timber top` | Show the top five tree fellers. |
+| `/timber version` | Show installed/latest versions and the Releases link. |
+| `/timber reload` | Reload configuration. |
 | `/timber help` | Show command help. |
 
 Aliases: `/fallingtimber`, `/timber`, `/ftimber`.
@@ -53,35 +60,45 @@ Aliases: `/fallingtimber`, `/timber`, `/ftimber`.
 
 | Permission | Default | Purpose |
 | --- | --- | --- |
-| `fallingtimber.use` | Everyone | Fell whole trees. |
-| `fallingtimber.command` | Everyone | Use player commands. |
+| `fallingtimber.use` | Everyone | Fell detected trees. |
+| `fallingtimber.command` | Everyone | Use FallingTimber commands. |
 | `fallingtimber.reload` | Operators | Reload configuration. |
+| `fallingtimber.inspect` | Operators | Inspect targeted trees. |
+| `fallingtimber.stats.others` | Operators | View another player's statistics. |
+| `fallingtimber.update-notify` | Operators | Receive update-available join notices. |
+
+## Important configuration areas
+
+- `worlds`: blacklist or whitelist specific worlds.
+- `detection`: natural-tree and structure safeguards.
+- `tools`: allowed axes, durability protection and optional item requirements.
+- `safety`: minimum TPS, cooldown, rate limit and cancellation distance.
+- `effects`: progress, sounds and particles.
+- `replant`: delayed single/2x2 sapling replacement.
+- `leaf-decay`: delayed, batched leaf removal.
+- `statistics`: persistent player stats.
+- `updates`: cached GitHub checks and administrator notifications.
+
+The stricter nearby-building-block check is available but disabled by default,
+as a naturally grown tree close to a house may legitimately touch a sign, door
+or container.
 
 ## Build from source
 
-Paper recommends Gradle. Install JDK 25, then run:
+Install JDK 25 and Gradle, then run:
 
 ```bash
 gradle clean build
 ```
 
-The output is `build/libs/FallingTimber-1.1.1.jar`.
+The output is `build/libs/FallingTimber-1.2.0.jar`.
 
-## Update notifications
-
-FallingTimber checks the latest public GitHub Release asynchronously and caches
-the result. Players see the installed version, latest version, and a clickable
-Releases link shortly after joining. The check, join message, delay, refresh
-interval, repository, and link can all be changed under `updates` in
-`config.yml`.
-
-Release downloads: https://github.com/BenJaminL11-AU/FallingTimber/releases
+Releases: https://github.com/BenJaminL11-AU/FallingTimber/releases
 
 ## Notes
 
-- Replanting is optional and disabled by default. It plants one sapling or
-  mangrove propagule at the detected base; 2x2 trees therefore receive one
-  sapling.
-- Connected trees of the same log type can be treated as one tree if their logs
-  touch. The maximum size and radius settings limit the impact.
-- Player `/timber toggle` choices intentionally reset when the server restarts.
+- FallingTimber targets Paper and is not a Fabric, Forge or NeoForge mod.
+- Nether wart blocks do not expose Minecraft's natural/player-placed leaf flag.
+  Strict natural-leaf detection therefore leaves Nether fungi untouched.
+- Trees of the same log type that physically touch may be detected together;
+  the size, radius, shape and optional building-block checks limit the risk.
