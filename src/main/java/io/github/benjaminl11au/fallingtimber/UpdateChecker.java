@@ -92,11 +92,22 @@ final class UpdateChecker implements Listener {
         }
 
         Player player = event.getPlayer();
+        if (plugin.settings().updateNotifyPermissionRequired()
+                && !player.hasPermission("fallingtimber.update-notify")) {
+            return;
+        }
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            if (player.isOnline()) {
+            if (player.isOnline() && (!plugin.settings().notifyOnlyWhenUpdateAvailable()
+                    || updateAvailable())) {
                 sendStatus(player);
             }
         }, plugin.settings().updateNotifyDelayTicks());
+    }
+
+    private boolean updateAvailable() {
+        ReleaseStatus snapshot = status;
+        return snapshot.state == State.READY
+                && compareVersions(snapshot.latestVersion, installedVersion()) > 0;
     }
 
     void sendStatus(CommandSender sender) {

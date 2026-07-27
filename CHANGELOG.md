@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.4.1
+
+- Restore the version panel on every player join by default.
+- Show installed version, latest GitHub release, update status and the clickable
+  Releases link even when the plugin is current.
+- Add `updates.notify-permission-required` for optional administrator-only
+  notifications.
+- Retain `updates.only-when-update-available` as an optional quiet mode.
+- Automatically migrate older configurations to the restored default behaviour.
+
+## 1.4.0
+
+- Add `/timber global on`, `/timber global off`, `/timber global toggle` and
+  `/timber global status`.
+- Add persistent personal `/timber leaves on|off|toggle|status` controls.
+- Add global `/timber global leaves on|off|toggle|status` controls.
+- Add in-game slow, normal, fast, very-fast and instant leaf-decay presets.
+- Keep tree felling and fast leaf decay as independent controls.
+- Persist global changes directly to `config.yml`.
+- Add the operator-only `fallingtimber.global` permission.
+- Safely cancel active tree-felling jobs when globally disabled.
+- Keep `/timber toggle` as each player's persistent personal preference.
+- Expand `/timber status` to show the global, personal and effective states of
+  both tree felling and fast leaf decay.
+
+## 1.3.0
+
+- Enable accelerated leaf decay by default.
+- Process leaf decay in configurable batches to avoid server lag spikes.
+- Retry decay in multiple passes while Minecraft recalculates leaf support.
+- Only remove non-persistent leaves at their maximum support distance.
+- Preserve player-placed leaves and leaves supported by neighbouring trees.
+- Avoid loading unloaded chunks solely to process leaf decay.
+- Back up and migrate older configurations to configuration format 3.
+
 ## 1.2.0
 
 - Persist player toggle and debug preferences across restarts.

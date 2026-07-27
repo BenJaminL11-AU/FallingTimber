@@ -12,14 +12,16 @@ plugins, and are guarded by conservative structure detection.
 - Protection against flat log structures, oversized trees, concurrent chopping
   and optionally logs touching doors, beds, containers, signs or workstations.
 - Persistent player `/timber toggle` and `/timber debug` preferences.
+- Independent persistent `/timber leaves` preference for each player.
 - Per-world blacklist or whitelist and configurable allowed axes.
 - Axe durability pre-check, optional enchantment/name requirements, TPS guard,
   cooldown, rate limit and distance cancellation.
-- Batched felling, optional batched leaf decay, sounds, particles and action-bar
+- Batched felling, safe repeated-pass leaf decay, sounds, particles and action-bar
   progress.
 - Optional single- and 2x2-tree replanting.
 - Player statistics, leaderboards and admin tree inspection.
-- Asynchronous, cached GitHub update checking with admin-only join notices.
+- Asynchronous, cached GitHub update checking with an every-join version panel,
+  latest-version status and clickable Releases link.
 - Automatic configuration migration with timestamped backups.
 
 ## Requirements
@@ -30,7 +32,7 @@ plugins, and are guarded by conservative structure detection.
 ## Installation
 
 1. Stop the server.
-2. Copy `FallingTimber-1.2.0.jar` into the root of the `plugins` folder.
+2. Copy `FallingTimber-1.4.1.jar` into the root of the `plugins` folder.
 3. Remove any older FallingTimber JAR so only one version remains.
 4. Start the server.
 5. Edit `plugins/FallingTimber/config.yml` if desired.
@@ -45,6 +47,10 @@ preferences and statistics are stored in `player-data.yml`.
 | Command | Purpose |
 | --- | --- |
 | `/timber toggle` | Persistently enable or disable tree felling for yourself. |
+| `/timber leaves on\|off\|toggle\|status` | Control fast leaves for trees you chop. |
+| `/timber global on\|off\|toggle\|status` | Control server-wide tree felling. |
+| `/timber global leaves on\|off\|toggle\|status` | Control server-wide fast leaves. |
+| `/timber global leaves speed <preset>` | Set slow, normal, fast, very-fast or instant decay. |
 | `/timber status` | Show your current FallingTimber state. |
 | `/timber debug` | Toggle action-bar rejection explanations. |
 | `/timber inspect` | Inspect the targeted log and explain tree detection. |
@@ -65,7 +71,8 @@ Aliases: `/fallingtimber`, `/timber`, `/ftimber`.
 | `fallingtimber.reload` | Operators | Reload configuration. |
 | `fallingtimber.inspect` | Operators | Inspect targeted trees. |
 | `fallingtimber.stats.others` | Operators | View another player's statistics. |
-| `fallingtimber.update-notify` | Operators | Receive update-available join notices. |
+| `fallingtimber.update-notify` | Operators | Receive join notices when permission filtering is enabled. |
+| `fallingtimber.global` | Operators | Change the global state from in-game or console. |
 
 ## Important configuration areas
 
@@ -75,9 +82,11 @@ Aliases: `/fallingtimber`, `/timber`, `/ftimber`.
 - `safety`: minimum TPS, cooldown, rate limit and cancellation distance.
 - `effects`: progress, sounds and particles.
 - `replant`: delayed single/2x2 sapling replacement.
-- `leaf-decay`: delayed, batched leaf removal.
+- `leaf-decay`: delayed, batched removal of unsupported natural leaves. It is
+  enabled by default and retries in safe passes as Minecraft updates leaf support.
 - `statistics`: persistent player stats.
-- `updates`: cached GitHub checks and administrator notifications.
+- `updates`: cached GitHub checks, every-join version panels and optional
+  permission/update-only filtering.
 
 The stricter nearby-building-block check is available but disabled by default,
 as a naturally grown tree close to a house may legitimately touch a sign, door
@@ -91,7 +100,7 @@ Install JDK 25 and Gradle, then run:
 gradle clean build
 ```
 
-The output is `build/libs/FallingTimber-1.2.0.jar`.
+The output is `build/libs/FallingTimber-1.4.1.jar`.
 
 Releases: https://github.com/BenJaminL11-AU/FallingTimber/releases
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "io.github.benjaminl11au"
-version = "1.2.0"
+version = "1.4.1"
 
 repositories {
     maven {

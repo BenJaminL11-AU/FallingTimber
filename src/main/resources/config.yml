@@ -1,62 +1,111 @@
-# Master switch for automatic tree felling.
+# FallingTimber configuration format. Updated automatically; previous files are
+# backed up under plugins/FallingTimber/config-backups before migration.
+config-version: 4
+
 enabled: true
-
-# Holding sneak while chopping performs a normal one-block break.
 sneak-to-bypass: true
-
-# Creative players normally build with logs, so Timber is disabled for them.
 allow-creative: false
-
-# Only connected logs of the same material as the first log are collected.
-# This is an important safeguard for houses and other wooden builds.
 same-log-type-only: true
-
-# Fire a BlockBreakEvent for every extra log so protection plugins can veto it.
 respect-other-plugins: true
 
+worlds:
+  # blacklist: enabled everywhere except listed worlds
+  # whitelist: disabled everywhere except listed worlds
+  mode: blacklist
+  list:
+    - creative
+    - plots
+
 detection:
-  # A candidate needs at least this many connected logs and nearby leaves.
   minimum-logs: 3
   minimum-leaves: 4
   leaf-search-radius: 2
-
-  # Naturally generated leaves have Minecraft's persistent flag turned off.
-  # Player-placed leaves are persistent, so decorative builds are ignored.
   require-natural-leaves: true
-
-  # The lowest log must be planted on normal tree-growing ground. This rejects
-  # most walls, roofs, log piles, bridges, and other wooden structures.
   require-rooted-tree: true
 
-  # Hard safety limits. Trees over the log limit are left alone.
-  maximum-logs: 256
-  maximum-horizontal-radius: 12
-  maximum-vertical-distance: 64
+  # Reject wide, flat formations that look more like floors or bridges.
+  reject-flat-formations: true
+
+  # Optional stricter check for doors, beds, chests, signs and workstations
+  # touching the logs. Disabled by default to avoid rejecting trees near homes.
+  reject-nearby-building-blocks: false
+  building-block-search-radius: 1
+
+  # Sized for 2x2 jungle trees, giant spruce and other large vanilla trees.
+  # Trees beyond these limits are rejected rather than only partially felled.
+  maximum-logs: 512
+  maximum-horizontal-radius: 20
+  maximum-vertical-distance: 128
+
+tools:
+  allowed-axes:
+    - WOODEN_AXE
+    - STONE_AXE
+    - COPPER_AXE
+    - IRON_AXE
+    - GOLDEN_AXE
+    - DIAMOND_AXE
+    - NETHERITE_AXE
+
+  # Conservatively estimates the durability required before starting a tree.
+  prevent-axe-breaking: true
+
+  # Optional namespaced enchantment, such as minecraft:efficiency. Blank means
+  # no enchantment is required.
+  required-enchantment: ''
+
+  # Optional exact custom axe name. Blank accepts any name.
+  required-custom-name: ''
 
 felling:
-  # Spreads large trees over multiple ticks to avoid a server lag spike.
   blocks-per-tick: 8
-
-  # Vanilla damages the axe for the first log. This applies normal durability,
-  # Unbreaking, events, and break animations for every additional log.
   damage-axe: true
   damage-per-extra-log: 1
 
-replant:
-  # Supports normal Overworld tree saplings/propagules. For 2x2 trees, a
-  # single sapling is planted at the detected base.
-  enabled: false
-  delay-ticks: 20
+safety:
+  # Set to 0 to disable a safeguard.
+  minimum-tps: 16.0
+  cooldown-seconds: 1
+  maximum-trees-per-minute: 20
+  cancel-distance: 32
 
-updates:
-  # Checks the latest public GitHub Release without blocking the server thread.
+feedback:
+  # Players may independently enable these messages with /timber debug.
+  show-rejection-reasons: false
+
+effects:
+  show-progress: true
+  sounds: true
+  particles: true
+
+replant:
+  enabled: false
+  delay-ticks: 40
+  support-two-by-two: true
+
+leaf-decay:
+  # Safely removes unsupported natural leaves after the logs have fallen.
+  # Player-placed leaves and leaves supported by another tree are untouched.
+  enabled: true
+  delay-ticks: 40
+  blocks-per-tick: 12
+  maximum-passes: 6
+  retry-delay-ticks: 10
+
+statistics:
   enabled: true
 
-  # Show installed/latest versions and a clickable Releases link when players join.
+updates:
+  enabled: true
   notify-on-join: true
-  notify-delay-ticks: 40
+  # false: show the version panel to every player
+  # true: only players with fallingtimber.update-notify receive it
+  notify-permission-required: false
 
-  # Results are shared between all players; GitHub is not contacted for every join.
+  # false: show installed/latest versions on every join
+  # true: remain silent unless a newer release is available
+  only-when-update-available: false
+  notify-delay-ticks: 60
   check-interval-hours: 6
   github-repository: 'BenJaminL11-AU/FallingTimber'
   releases-url: 'https://github.com/BenJaminL11-AU/FallingTimber/releases'
