@@ -1,6 +1,6 @@
 # FallingTimber
 
-FallingTimber is a lightweight Paper 26.2 plugin that fells a whole natural
+FallingTimber is a lightweight Paper 26.3 plugin that fells a whole natural
 tree when a player breaks one log with an allowed axe. Logs fall in a controlled
 top-down cascade, use normal drops, respect axe durability and protection
 plugins, and are guarded by conservative structure detection.
@@ -26,13 +26,13 @@ plugins, and are guarded by conservative structure detection.
 
 ## Requirements
 
-- Paper 26.2
-- Java 25 or newer as required by Paper 26.2
+- Paper 26.3
+- Java 25 or newer as required by Paper 26.3
 
 ## Installation
 
 1. Stop the server.
-2. Copy `FallingTimber-1.4.1.jar` into the root of the `plugins` folder.
+2. Copy `FallingTimber-1.4.2.jar` into the root of the `plugins` folder.
 3. Remove any older FallingTimber JAR so only one version remains.
 4. Start the server.
 5. Edit `plugins/FallingTimber/config.yml` if desired.
@@ -100,7 +100,7 @@ Install JDK 25 and Gradle, then run:
 gradle clean build
 ```
 
-The output is `build/libs/FallingTimber-1.4.1.jar`.
+The output is `build/libs/FallingTimber-1.4.2.jar`.
 
 Releases: https://github.com/BenJaminL11-AU/FallingTimber/releases
 

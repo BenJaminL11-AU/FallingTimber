@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.2
+
+- Add support for Paper and Minecraft Java Edition 26.3.
+- Compile against Paper 26.3 build 40 using Java 25.
+- Support the new poplar tree automatically through Paper's log tag, natural
+  leaf data and matching poplar sapling material.
+
 ## 1.4.1
 
 - Restore the version panel on every player join by default.

@@ -50,7 +50,7 @@ public final class FallingTimberPlugin extends JavaPlugin {
                 this, playerData::saveIfDirty, 600L, 600L);
 
         getLogger().info("FallingTimber " + getPluginMeta().getVersion()
-                + " enabled for Paper 26.2.");
+                + " enabled for Paper 26.3.");
     }
 
     @Override

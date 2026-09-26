@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "io.github.benjaminl11au"
-version = "1.4.1"
+version = "1.4.2"
 
 repositories {
     maven {
@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.40-alpha")
 }
 
 java {
